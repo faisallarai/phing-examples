@@ -184,7 +184,7 @@
 
     <target
         name="deploy"
-        depends="deploy:settings, deploy:create-package, deploy:stop, deploy:upload, deploy:cleanup, deploy:start"
+        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
         description="Deploys the project">
         <echo>Deployment complete</echo>
     </target>
