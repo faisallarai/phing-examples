@@ -13,7 +13,8 @@
         <ssh host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
-            password="${ssh.password}"
+            privkeyfile="${ssh.key.private}"
+            pubkeyfile="${ssh.key.public}"
             command="${command}"
             failonerror="true" />
     </target>
@@ -62,7 +63,8 @@
         <scp host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
-            password="${ssh.password}"
+            privkeyfile="${ssh.key.private}"
+            pubkeyfile="${ssh.key.public}"
             todir="${deploy.location.project}/${build.release}"
             file="${package.name.full}" />
 
@@ -177,14 +179,14 @@
     </target>
 
     <target
-        name="build" depends="build:clean, build:lint, build:copy, build:composer"
+        name="build" depends="build:clean, build:lint, build:test, build:copy, build:composer"
         description="Builds the project">
         <echo>Build complete</echo>
     </target>
 
     <target
         name="deploy"
-        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
+        depends="deploy:settings"
         description="Deploys the project">
         <echo>Deployment complete</echo>
     </target>
@@ -199,7 +201,8 @@
                 <ssh host="${ssh.host}"
                     port="${ssh.port}"
                     username="${ssh.username}"
-                    password="${ssh.password}"
+                    privkeyfile="${ssh.key.private}"
+                    pubkeyfile="${ssh.key.public}"
                     command="cd ${deploy.location.project}; rm -f current; mv -f previous current"
                     failonerror="true" />
                 <echo>Rollback complete</echo>
