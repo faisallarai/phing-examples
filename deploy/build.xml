@@ -14,8 +14,6 @@
             port="${ssh.port}"
             username="${ssh.username}"
             password="${ssh.password}"
-            privkeyfile="${ssh.key.private}"
-            pubkeyfile="${ssh.key.public}"
             command="${command}"
             failonerror="true" />
     </target>
@@ -66,8 +64,6 @@
             port="${ssh.port}"
             username="${ssh.username}"
             password="${ssh.password}"
-            privkeyfile="${ssh.key.private}"
-            pubkeyfile="${ssh.key.public}"
             todir="${deploy.location.project}/${build.release}"
             file="${package.name.full}" />
 
