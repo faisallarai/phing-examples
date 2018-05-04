@@ -43,11 +43,12 @@
             <format property="build.timestamp" pattern="%Y%m%d%H%M%S"/>
         </tstamp>
         <property name="build.release" value="${project.name}-${build.timestamp}" />
-        <property name="package.name" value="${build.release}.tar.gz" />
+        <property name="package.name" value="${build.release}.zip" />
         <property name="package.name.full" value="${build.dir.artifacts}/${package.name}" />
         <echo>Creating dist package ${package.name}</echo>
         
-        <tar destfile="${package.name.full}" basedir="${build.dir.project}" />
+        <zip destfile="${package.name.full}" basedir="${build.dir.project}" />
+
     </target>
     
     <!-- uploads & extracts tar package, and makes sure symlink points to new version -->
