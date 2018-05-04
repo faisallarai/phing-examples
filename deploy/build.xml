@@ -13,6 +13,7 @@
         <ssh host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
+            password="${ssh.password}"
             privkeyfile="${ssh.key.private}"
             pubkeyfile="${ssh.key.public}"
             command="${command}"
@@ -64,6 +65,7 @@
         <scp host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
+            password="${ssh.password}"
             privkeyfile="${ssh.key.private}"
             pubkeyfile="${ssh.key.public}"
             todir="${deploy.location.project}/${build.release}"
@@ -71,7 +73,7 @@
 
         <echo>Extracting package</echo>
         <phingcall target="deploy:ssh">
-            <property name="command" value="cd ${deploy.location.project}/${build.release}; tar xzf ${package.name}" />
+            <property name="command" value="cd ${deploy.location.project}/${build.release}; unzip -d ${package.name}" />
         </phingcall>
         
         <echo>Setting permissions</echo>
@@ -192,7 +194,7 @@
 
     <target
         name="deploy"
-        depends="deploy:settings, deploy:create-package"
+        depends="deploy:settings, deploy:create-package, deploy:upload"
         description="Deploys the project">
         <echo>Deployment complete</echo>
     </target>
