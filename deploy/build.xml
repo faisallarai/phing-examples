@@ -13,8 +13,7 @@
         <ssh host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
-            privkeyfile="${ssh.key.private}"
-            pubkeyfile="${ssh.key.public}"
+            password="${ssh.password}"
             command="${command}"
             failonerror="true" />
     </target>
@@ -63,8 +62,7 @@
         <scp host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
-            privkeyfile="${ssh.key.private}"
-            pubkeyfile="${ssh.key.public}"
+            password="${ssh.password}"
             todir="${deploy.location.project}/${build.release}"
             file="${package.name.full}" />
 
@@ -201,8 +199,7 @@
                 <ssh host="${ssh.host}"
                     port="${ssh.port}"
                     username="${ssh.username}"
-                    privkeyfile="${ssh.key.private}"
-                    pubkeyfile="${ssh.key.public}"
+                    password="${ssh.password}"
                     command="cd ${deploy.location.project}; rm -f current; mv -f previous current"
                     failonerror="true" />
                 <echo>Rollback complete</echo>
