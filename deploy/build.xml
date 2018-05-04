@@ -54,11 +54,6 @@
     <target name="deploy:upload" hidden="true">
         <property name="deploy.location.project" value="${deploy.location}/${project.name}" />
         
-        <echo>Creating directories</echo>
-        <phingcall target="deploy:ssh">
-            <property name="command" value="mkdir -p ${deploy.location.project}/${build.release}" />
-        </phingcall>
-        
         <echo>Copying package</echo>
         <scp host="${ssh.host}"
             port="${ssh.port}"
@@ -66,21 +61,7 @@
             password="${ssh.password}"
             todir="${deploy.location.project}/${build.release}"
             file="${package.name.full}" />
-
-        <echo>Extracting package</echo>
-        <phingcall target="deploy:ssh">
-            <property name="command" value="cd ${deploy.location.project}/${build.release}; unzip -d ${package.name}" />
-        </phingcall>
         
-        <echo>Setting permissions</echo>
-        <phingcall target="deploy:ssh">
-            <property name="command" value="chgrp -R ${deploy.group} ${deploy.location.project}/${build.release}; chmod g+w -R ${deploy.location.project}/${build.release}" />
-        </phingcall>
-
-        <echo>Creating symbolic link</echo>
-        <phingcall target="deploy:ssh">
-            <property name="command" value="cd ${deploy.location.project}; if [ -h &quot;current&quot; ]; then rm -f previous; mv current previous; fi; ln -s ${build.release} current" />
-        </phingcall>
     </target>
     
     <!-- clean up old installations and packages -->
