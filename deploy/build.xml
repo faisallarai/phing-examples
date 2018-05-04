@@ -179,7 +179,7 @@
     </target>
 
     <target
-        name="build" depends="build:clean, build:lint, build:test, build:copy, build:composer"
+        name="build" depends="build:clean, build:lint, build:copy, build:composer"
         description="Builds the project">
         <echo>Build complete</echo>
     </target>
