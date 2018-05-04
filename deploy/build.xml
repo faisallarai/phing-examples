@@ -104,10 +104,11 @@
     
     <!-- checks or asks for deployment settings -->
     <target name="deploy:check-settings" hidden="true">
-        <echo>Checking your deployment settings...</echo>
+        <echo>Checking your deployment settings...${deploy.target}</echo>
         <if>
             <not>
                 <isset property="deploy.target" />
+
             </not>
             <then>
                 <input propertyname="deploy.target" validArgs="${targets.allowed}" promptChar=":">Please select a destination target </input>
@@ -116,7 +117,11 @@
     </target>
     
     <!-- loads settings for chosen target -->
-    <target name="deploy:settings" depends="deploy:check-settings" hidden="true">
+    <target name="deploy:settings" hidden="true">
+        <echo>Loading settings for target ${targets.allowed}</echo>
+
+        <property name="deploy.target" value="${targets.allowed}" />
+
         <echo>Loading settings for target ${deploy.target}</echo>
         
         <property name="target.properties" value="${deploy.target}.properties" />
