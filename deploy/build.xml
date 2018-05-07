@@ -113,11 +113,29 @@
         </if>
     </target>
     
-    <!-- loads settings for chosen target -->
-    <target name="deploy:settings" hidden="true">
+    <!-- loads development settings for chosen target -->
+    <target name="deploy:settings:development" hidden="true">
         <echo>Loading settings for target ${deploy.target}</echo>
-        <property name="deploy.target" value="${targets.allowed}" />
+        <property name="deploy.target" value="development" />
         
+        <property name="target.properties" value="${deploy.target}.properties" />
+        
+        <if>
+            <not>
+                <available file="${target.properties}" />
+            </not>
+            <then>
+                <fail>Unable to find settings!</fail>
+            </then>
+        </if>
+        
+        <property file="${target.properties}" />
+    </target>
+
+    <!-- loads production settings for chosen target -->
+    <target name="deploy:settings:production" hidden="true">
+        <echo>Loading settings for target ${deploy.target}</echo>
+        <property name="deploy.target" value="production" />
         
         <property name="target.properties" value="${deploy.target}.properties" />
         
@@ -186,14 +204,15 @@
 
     <target
         name="deploy:development"
-        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
+        depends="deploy:settings:development, deploy:create-package, deploy:upload, deploy:cleanup"
         description="Deploys the project">
         <echo>Development Deployment complete</echo>
     </target>
     <target
         name="deploy:production"
-        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
+        depends="deploy:settings:production, deploy:create-package, deploy:upload, deploy:cleanup"
         description="Deploys the project">
+        
         <echo>Production Deployment complete </echo>
     </target>
 
