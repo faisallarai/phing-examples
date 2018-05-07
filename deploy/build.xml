@@ -63,8 +63,7 @@
         <scp host="${ssh.host}"
             port="${ssh.port}"
             username="${ssh.username}"
-            privkeyfile="${ssh.key.private}"
-            pubkeyfile="${ssh.key.public}"
+            password="${ssh.password}"
             todir="${deploy.location.project}/${build.release}"
             file="${package.name.full}" />
 
