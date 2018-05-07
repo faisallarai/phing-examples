@@ -42,12 +42,11 @@
             <format property="build.timestamp" pattern="%Y%m%d%H%M%S"/>
         </tstamp>
         <property name="build.release" value="${project.name}-${build.timestamp}" />
-        <property name="package.name" value="${build.release}.zip" />
+        <property name="package.name" value="${build.release}.tar.gz" />
         <property name="package.name.full" value="${build.dir.artifacts}/${package.name}" />
         <echo>Creating dist package ${package.name}</echo>
         
-        <zip destfile="${package.name.full}" basedir="${build.dir.project}" />
-
+        <tar destfile="${package.name.full}" basedir="${build.dir.project}" />
     </target>
     
     <!-- uploads & extracts tar package, and makes sure symlink points to new version -->
@@ -69,7 +68,7 @@
 
         <echo>Extracting package</echo>
         <phingcall target="deploy:ssh">
-            <property name="command" value="cd ${deploy.location.project}/${build.release}; unzip ${package.name}" />
+            <property name="command" value="cd ${deploy.location.project}/${build.release}; tar xzf ${package.name}" />
         </phingcall>
         
         <echo>Setting permissions</echo>
@@ -103,11 +102,10 @@
     
     <!-- checks or asks for deployment settings -->
     <target name="deploy:check-settings" hidden="true">
-        <echo>Checking your deployment settings...${deploy.target}</echo>
+        <echo>Checking your deployment settings...</echo>
         <if>
             <not>
                 <isset property="deploy.target" />
-
             </not>
             <then>
                 <input propertyname="deploy.target" validArgs="${targets.allowed}" promptChar=":">Please select a destination target </input>
@@ -116,11 +114,7 @@
     </target>
     
     <!-- loads settings for chosen target -->
-    <target name="deploy:settings" hidden="true">
-        <echo>Loading settings for target ${targets.allowed}</echo>
-
-        <property name="deploy.target" value="${targets.allowed}" />
-
+    <target name="deploy:settings" depends="deploy:check-settings" hidden="true">
         <echo>Loading settings for target ${deploy.target}</echo>
         
         <property name="target.properties" value="${deploy.target}.properties" />
@@ -190,7 +184,7 @@
 
     <target
         name="deploy"
-        depends="deploy:settings, deploy:create-package, deploy:upload"
+        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
         description="Deploys the project">
         <echo>Deployment complete</echo>
     </target>
@@ -205,8 +199,7 @@
                 <ssh host="${ssh.host}"
                     port="${ssh.port}"
                     username="${ssh.username}"
-                    privkeyfile="${ssh.key.private}"
-                    pubkeyfile="${ssh.key.public}"
+                    password="${ssh.password}"
                     command="cd ${deploy.location.project}; rm -f current; mv -f previous current"
                     failonerror="true" />
                 <echo>Rollback complete</echo>
@@ -217,4 +210,3 @@
         </trycatch>
     </target>
 </project>
-
