@@ -114,8 +114,10 @@
     </target>
     
     <!-- loads settings for chosen target -->
-    <target name="deploy:settings" depends="deploy:check-settings" hidden="true">
+    <target name="deploy:settings" hidden="true">
         <echo>Loading settings for target ${deploy.target}</echo>
+        <property name="deploy.target" value="${targets.allowed}" />
+        
         
         <property name="target.properties" value="${deploy.target}.properties" />
         
@@ -183,10 +185,16 @@
     </target>
 
     <target
-        name="deploy"
+        name="deploy:development"
         depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
         description="Deploys the project">
-        <echo>Deployment complete</echo>
+        <echo>Development Deployment complete</echo>
+    </target>
+    <target
+        name="deploy:production"
+        depends="deploy:settings, deploy:create-package, deploy:upload, deploy:cleanup"
+        description="Deploys the project">
+        <echo>Production Deployment complete </echo>
     </target>
 
     <target
