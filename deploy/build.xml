@@ -112,6 +112,24 @@
             </then>
         </if>
     </target>
+
+    <target name="deploy:settings" depends="deploy:check-settings" hidden="true">
+        <echo>Loading settings for target ${deploy.target}</echo>
+        
+        <property name="target.properties" value="${deploy.target}.properties" />
+        
+        <if>
+            <not>
+                <available file="${target.properties}" />
+            </not>
+            <then>
+                <fail>Unable to find settings!</fail>
+            </then>
+        </if>
+        
+        <property file="${target.properties}" />
+    </target>
+
     
     <!-- loads development settings for chosen target -->
     <target name="deploy:settings:development" hidden="true">
